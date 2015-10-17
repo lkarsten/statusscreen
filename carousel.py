@@ -18,16 +18,15 @@ inputdir = argv[1]
 
 def reload_images(dir):
     global images
-    print >>stderr, "(Re)loading images"
     for imagefile in glob(dir + "/*"):
         imagename = basename(imagefile)
         if imagename in images:
             continue
-
         print >>stderr, "Loaded %s" % imagefile
         img = pygame.image.load(imagefile).convert()
         img.set_colorkey((0, 0, 0))
         images[imagename] = img
+    print >>stderr, "(Re)loaded %i images" % len(images)
 
 
 if __name__ == "__main__":
