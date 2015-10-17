@@ -42,6 +42,8 @@ if __name__ == "__main__":
     pygame.mouse.set_visible(False)
     pygame.display.set_caption('carousel')
 
+    reload_images(argv[1])
+
     last_reload = 0.0
     last_blit = 0.0
 
