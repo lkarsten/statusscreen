@@ -62,8 +62,10 @@ if __name__ == "__main__":
                     last_reload = 0.0
                 if event.key in [K_LEFT, K_SPACE]:
                     last_blit = 0.0
-                elif event.key in [K_ESCAPE, K_RETURN]:
+                elif event.key in [K_ESCAPE, K_RETURN, K_q]:
                     done = True
+        if done:
+            break
 
         if now > last_reload + 120:
             reload_images("images")
