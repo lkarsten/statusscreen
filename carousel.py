@@ -67,7 +67,7 @@ if __name__ == "__main__":
             break
 
         if now > last_reload + 120:
-            reload_images("images")
+            reload_images(argv[1])
             last_reload = now
 
         elif now > last_blit + 5:
