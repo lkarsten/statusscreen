@@ -10,7 +10,8 @@ import subprocess
 import pygame
 from sys import stderr, argv
 from datetime import datetime, timedelta
-from os import unlink, rename
+from tempfile import NamedTemporaryFile
+from os import rename
 from pprint import pprint
 
 fmt = "%Y-%m-%d"
@@ -43,6 +44,10 @@ def compute():
 
 
 if __name__ == "__main__":
+    if len(argv) == 1:
+        print "Usage: %s output.png" % argv[0]
+        exit(-1)
+
     dataset = compute()
     pygame.init()
 
@@ -60,4 +65,6 @@ if __name__ == "__main__":
     s.blit(daily, (80, 160))
     s.blit(monthly, (80, 240))
 
-    pygame.image.save(s, argv[1])
+    tmpfile = NamedTemporaryFile(suffix="png").name
+    pygame.image.save(s, tmpfile)
+    rename(tmpfile, argv[1])
