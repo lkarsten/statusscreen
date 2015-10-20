@@ -54,16 +54,14 @@ if __name__ == "__main__":
     s = pygame.Surface((800, 600))
     s.fill((0,0,0))
 
-    font = pygame.font.SysFont(pygame.font.get_default_font(), 64, bold=True)
+    font = pygame.font.SysFont(pygame.font.get_default_font(), 96, bold=True)
+    bigfont = pygame.font.SysFont(pygame.font.get_default_font(), 320, bold=True)
 
-    headline = font.render("Varnish Cache downloads", 1, (255, 255, 255))
+    daily = bigfont.render("%i" % dataset["today"], 1, (255, 255, 255))
+    headline = font.render("downloads today", 1, (255, 255, 255))
 
-    daily = font.render("Today: %i" % dataset["today"], 1, (255, 255, 255))
-    monthly = font.render("Last 30d: %i" % dataset["thismonth"], 1, (255, 255, 255))
-
-    s.blit(headline, (80, 80))
-    s.blit(daily, (80, 160))
-    s.blit(monthly, (80, 240))
+    s.blit(daily, (180, 100))
+    s.blit(headline, (180, 400))
 
     tmpfile = NamedTemporaryFile(suffix="png").name
     pygame.image.save(s, tmpfile)
