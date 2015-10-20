@@ -8,7 +8,7 @@ import urllib
 import json
 import subprocess
 import pygame
-from sys import stderr
+from sys import stderr, argv
 from datetime import datetime, timedelta
 from os import unlink, rename
 from pprint import pprint

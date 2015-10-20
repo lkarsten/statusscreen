@@ -42,7 +42,7 @@ def compute():
     return r
 
 
-def transform_and_write(dataset, outputfile="foo.jpg"):
+def transform_and_write(dataset, outputfile="vco-dl.png"):
     imagefile = "Varnish_cache_downloads.svg"
     m = open(imagefile).read()
 
@@ -55,8 +55,8 @@ def transform_and_write(dataset, outputfile="foo.jpg"):
     with open("tmp.svg", "wb") as outfp:
         outfp.write(m)
 
-    subprocess.call(["convert", "tmp.svg", "tmp.jpg"])
-    rename("tmp.jpg", outputfile)
+    subprocess.call(["convert", "tmp.svg", "tmp.png"])
+    rename("tmp.png", outputfile)
     unlink("tmp.svg")
 
 if __name__ == "__main__":

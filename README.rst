@@ -8,7 +8,10 @@ A small image viewer/carousel.
 Requirements
 ------------
 
+Install on Debian::
+
     apt-get install python-pygame
+    apt-get install imagemagick  # for svg to png conversion.
 
 
 Installation (on a pi)
