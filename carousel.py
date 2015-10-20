@@ -20,8 +20,6 @@ def reload_images(dir):
     global images
     for imagefile in glob(dir + "/*"):
         imagename = basename(imagefile)
-        if imagename in images:
-            continue
         print >>stderr, "Loaded %s" % imagefile
         img = pygame.image.load(imagefile).convert()
         img.set_colorkey((0, 0, 0))
@@ -66,7 +64,7 @@ if __name__ == "__main__":
         if done:
             break
 
-        if now > last_reload + 120:
+        if now > last_reload + 30:
             reload_images(argv[1])
             last_reload = now
 
