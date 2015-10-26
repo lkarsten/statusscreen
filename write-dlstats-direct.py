@@ -17,10 +17,13 @@ from pprint import pprint
 fmt = "%Y-%m-%d"
 
 def compute():
-    r = {}
     j = urllib.urlopen("https://repo.varnish-cache.org/dlstats/daily.json")
     stats = json.loads(j.read())
-    today = datetime.today()
+
+    r = {}
+    r["last-modified"] = datetime.strptime(j.headers["last-modified"], '%a, %d %b %Y %H:%M:%S GMT')
+
+    today = r["last-modified"]    # use the data we have, if something stops.
     r["today"] = stats[today.strftime(fmt)]
     r["thismonth"] = 0
     for i in range(0, 30):
