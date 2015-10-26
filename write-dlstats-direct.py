@@ -57,14 +57,17 @@ if __name__ == "__main__":
     s = pygame.Surface((800, 600))
     s.fill((0,0,0))
 
+    smallfont = pygame.font.SysFont(pygame.font.get_default_font(), 24)
     font = pygame.font.SysFont(pygame.font.get_default_font(), 96, bold=True)
     bigfont = pygame.font.SysFont(pygame.font.get_default_font(), 320, bold=True)
 
     daily = bigfont.render("%i" % dataset["today"], 1, (255, 255, 255))
     headline = font.render("downloads today", 1, (255, 255, 255))
+    updated = smallfont.render("last updated %s" % dataset["last-modified"], 1, (196, 196, 196))
 
     s.blit(daily, (180, 100))
     s.blit(headline, (180, 400))
+    s.blit(updated, (180, 500))
 
     tmpfile = NamedTemporaryFile(suffix="png").name
     pygame.image.save(s, tmpfile)
