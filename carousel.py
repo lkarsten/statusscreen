@@ -24,8 +24,8 @@ def log(msg):
         logfp = open("log-carousel.txt", "a")
 
     m = "%s %s" % (datetime.now().isoformat(), msg)
-    print >>stderr, m
     print >>logfp, m
+    print >>stderr, m
 
 
 def reload_images(dir):
@@ -130,4 +130,5 @@ if __name__ == "__main__":
         else:
             sleep(0.1)
 
+    log("Normal exit")
     pygame.quit()
