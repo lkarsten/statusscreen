@@ -28,6 +28,7 @@ Installation (on a pi)
     fi
 
 * Set up some (cron-ed) image generators/writers to write to images/.
+  For VS: there is a separate git repository with these. (carousel-writers.git)
 
 At this point the automatic login of the pi user will start the
 carousel on boot.
