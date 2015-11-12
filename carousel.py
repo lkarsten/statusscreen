@@ -12,6 +12,7 @@ from time import time, sleep
 from datetime import datetime
 from pprint import pprint
 from pygame.locals import *
+from os import stat
 import pygame
 
 images = {}
@@ -28,20 +29,21 @@ def log(msg):
     print >>stderr, m
 
 
-def reload_images(dir):
+def load_images(dir):
     global images
     for imagefile in glob(dir + "/*"):
+        fileinfo = stat(imagefile)
         imagename = basename(imagefile)
-        log("Loaded %s" % imagefile)
-        try:
-            img = pygame.image.load(imagefile).convert()
-        except Exception as e:
-            log("Error %s loading %s" % (imagefile, str(e)))
-            continue
 
-        img.set_colorkey((0, 0, 0))
-        images[imagename] = img
-    log("(Re)loaded %i images" % len(images))
+        if imagename not in images or fileinfo.st_mtime > images[imagename][0]:
+            log("Loading %s" % imagefile)
+            try:
+                img = pygame.image.load(imagefile).convert()
+            except Exception as e:
+                log("Error %s loading %s" % (imagefile, str(e)))
+                continue
+            img.set_colorkey((0, 0, 0))
+            images[imagename] = (fileinfo.st_mtime, img)
 
 
 if __name__ == "__main__":
@@ -64,11 +66,7 @@ if __name__ == "__main__":
     pygame.mouse.set_visible(False)
     pygame.display.set_caption('carousel')
 
-    reload_images(inputdir)
-
-    last_reload = 0.0
     last_blit = 0.0
-
     done = False
     i = 0
 
@@ -80,28 +78,23 @@ if __name__ == "__main__":
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 done = True
             elif event.type == pygame.KEYDOWN:
-                if event.key in [K_F5]:
-                    last_reload = 0.0
-                if event.key in [K_LEFT, K_SPACE]:
+                if event.key in [K_RIGHT, K_SPACE]:
                     last_blit = 0.0
                 elif event.key in [K_ESCAPE, K_RETURN, K_q]:
                     done = True
         if done:
             break
 
-        if now > last_reload + 30:
-            reload_images(inputdir)
-            last_reload = now
-
-        elif now > last_blit + 5:
+        elif now > last_blit + 20:
             i += 1
+            load_images(inputdir)
             possible_images = images.values()
             if len(possible_images) == 0:
                 log("No images to show, sleeping..")
                 sleep(5)
                 continue
 
-            current_image = possible_images[i % len(possible_images)]
+            current_image = possible_images[i % len(possible_images)][1]
             if scale < 1.0:
                 current_image = pygame.transform.scale(current_image,
                     [ int(x*scale) for x in current_image.get_size()])
