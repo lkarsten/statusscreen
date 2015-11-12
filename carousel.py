@@ -92,8 +92,6 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                done = True
             elif event.type == pygame.KEYDOWN:
                 if event.key in [K_RIGHT, K_SPACE]:
                     last_blit = 0.0
