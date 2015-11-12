@@ -106,23 +106,11 @@ if __name__ == "__main__":
                 current_image = pygame.transform.scale(current_image,
                     [ int(x*scale) for x in current_image.get_size()])
 
-            blitpos = (200, 200)
-
-            if 0:
-                image_center = (current_image.get_height() / 2.,
-                          current_image.get_width() / 2.)
-
-                info = pygame.display.Info()
-                screen_center = (info.current_h / 2., info.current_w / 2.)
-
-                pprint(info)
-
-                blitpos = (screen_center[0] - image_center[0],
-                           screen_center[1] - image_center[1])
-                blitpos = screen_center
+            image_center = current_image.get_rect().center
+            screen_center = screen.get_rect().center
+            blitpos = [ t[0]-t[1] for t in zip(screen_center, image_center) ]
 
             screen.fill((0, 0, 0))
-
             screen.blit(current_image, blitpos)
             pygame.display.flip()
 
