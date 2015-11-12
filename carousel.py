@@ -76,6 +76,11 @@ if __name__ == "__main__":
         elif now > last_blit + 5:
             i += 1
             possible_images = images.values()
+            if len(possible_images) == 0:
+                log("No images to show, sleeping..")
+                sleep(5)
+                continue
+
             current_image = possible_images[i % len(possible_images)]
             blitpos = (200, 200)
 
