@@ -31,6 +31,7 @@ def log(msg):
 
 def load_images(dir):
     global images
+    checked = []
     for imagefile in glob(dir + "/*"):
         fileinfo = stat(imagefile)
         imagename = basename(imagefile)
@@ -43,7 +44,23 @@ def load_images(dir):
                 log("Error %s loading %s" % (imagefile, str(e)))
                 continue
             img.set_colorkey((0, 0, 0))
+
             images[imagename] = (fileinfo.st_mtime, img)
+        checked.append(imagename)
+
+    for k in images.keys():
+        if not k in checked:
+            log("Image %s has vanished." % k)
+            del images[k]
+
+def get_image(counter):
+    global images
+    load_images(inputdir)
+    if len(images) == 0:
+        return None
+
+    imgtuple = images.values()[i % len(images)]
+    return imgtuple[1]
 
 
 if __name__ == "__main__":
@@ -87,26 +104,23 @@ if __name__ == "__main__":
 
         elif now > last_blit + 20:
             i += 1
-            load_images(inputdir)
-            possible_images = images.values()
-            if len(possible_images) == 0:
-                log("No images to show, sleeping..")
-                sleep(5)
-                continue
+            current_image = get_image(i)
+            if current_image:
+                if scale < 1.0:
+                    current_image = pygame.transform.scale(current_image,
+                        [ int(x*scale) for x in current_image.get_size()])
 
-            current_image = possible_images[i % len(possible_images)][1]
-            if scale < 1.0:
-                current_image = pygame.transform.scale(current_image,
-                    [ int(x*scale) for x in current_image.get_size()])
-
-            image_center = current_image.get_rect().center
-            screen_center = screen.get_rect().center
-            blitpos = [ t[0]-t[1] for t in zip(screen_center, image_center) ]
+                image_center = current_image.get_rect().center
+                screen_center = screen.get_rect().center
+                blitpos = [ t[0]-t[1] for t in zip(screen_center, image_center) ]
 
             screen.fill((0, 0, 0))
-            screen.blit(current_image, blitpos)
-            pygame.display.flip()
+            if current_image:
+                screen.blit(current_image, blitpos)
+            else:
+                log("Nothing to show.")
 
+            pygame.display.flip()
             last_blit = now
         else:
             sleep(0.1)
