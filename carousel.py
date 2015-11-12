@@ -42,14 +42,17 @@ if __name__ == "__main__":
         print ""
         print "Input directory should have a set of loadable images."
         exit(-1)
-    inputdir = argv[1]
 
     pygame.init()
     if "--fullscreen" in argv:
         argv.pop(argv.index("--fullscreen"))
         screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        scale = 1.0
     else:
-        screen = pygame.display.set_mode((800, 600))
+        scale = 0.75
+        screen = pygame.display.set_mode((int(1920*scale), int(1080*scale)))
+    inputdir = argv[1]
+
     pygame.mouse.set_visible(False)
     pygame.display.set_caption('carousel')
 
@@ -91,6 +94,10 @@ if __name__ == "__main__":
                 continue
 
             current_image = possible_images[i % len(possible_images)]
+            if scale < 1.0:
+                current_image = pygame.transform.scale(current_image,
+                    [ int(x*scale) for x in current_image.get_size()])
+
             blitpos = (200, 200)
 
             if 0:
