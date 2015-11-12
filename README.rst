@@ -24,9 +24,12 @@ Installation (on a pi)
 * Put this in .bashrc::
 
     if [ "$SHLVL" == 1 -a -z "$SSH_CONNECTION" ]; then
-        cd statusscreen && ./carousel.py --fullscreen testimages/
+        cd statusscreen && ./carousel.py --fullscreen images
     fi
 
-* Set up some image generators/writers to write to testimages/. (cronjobs)
+* Set up some (cron-ed) image generators/writers to write to images/.
 
+At this point the automatic login of the pi user will start the
+carousel on boot.
 
+You also need to stop lightdm from starting. Details fuzzy.
