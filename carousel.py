@@ -21,7 +21,12 @@ def reload_images(dir):
     for imagefile in glob(dir + "/*"):
         imagename = basename(imagefile)
         print >>stderr, "Loaded %s" % imagefile
-        img = pygame.image.load(imagefile).convert()
+        try:
+            img = pygame.image.load(imagefile).convert()
+        except Exception as e:
+            print >>stderr, "Error %s loading %s" % (imagefile, str(e))
+            continue
+
         img.set_colorkey((0, 0, 0))
         images[imagename] = img
     print >>stderr, "(Re)loaded %i images" % len(images)
