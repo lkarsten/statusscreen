@@ -16,9 +16,17 @@ import pygame
 
 images = {}
 
+logfp = None
+
 def log(msg):
-    now = datetime.now()
-    print >>stderr, "%s %s" % (now.isoformat(), msg)
+    global logfp
+    if logfp is None:
+        logfp = open("log-carousel.txt", "a")
+
+    m = "%s %s" % (datetime.now().isoformat(), msg)
+    print >>stderr, m
+    print >>logfp, m
+
 
 def reload_images(dir):
     global images
