@@ -15,8 +15,6 @@ from pygame.locals import *
 import pygame
 
 images = {}
-inputdir = argv[1]
-
 
 def log(msg):
     now = datetime.now()
@@ -39,18 +37,23 @@ def reload_images(dir):
 
 
 if __name__ == "__main__":
-    pygame.init()
+    if len(argv) < 2:
+        print "Usage: %s [--fullscreen] <inputdirectory>" % argv[0]
+        print ""
+        print "Input directory should have a set of loadable images."
+        exit(-1)
+    inputdir = argv[1]
 
+    pygame.init()
     if "--fullscreen" in argv:
         argv.pop(argv.index("--fullscreen"))
         screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
     else:
         screen = pygame.display.set_mode((800, 600))
-
     pygame.mouse.set_visible(False)
     pygame.display.set_caption('carousel')
 
-    reload_images(argv[1])
+    reload_images(inputdir)
 
     last_reload = 0.0
     last_blit = 0.0
@@ -76,7 +79,7 @@ if __name__ == "__main__":
             break
 
         if now > last_reload + 30:
-            reload_images(argv[1])
+            reload_images(inputdir)
             last_reload = now
 
         elif now > last_blit + 5:
