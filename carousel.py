@@ -27,6 +27,7 @@ def log(msg):
     m = "%s %s" % (datetime.now().isoformat(), msg)
     print >>logfp, m
     print >>stderr, m
+    logfp.flush()
 
 
 def load_images(dir):
