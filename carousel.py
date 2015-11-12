@@ -9,6 +9,7 @@ from sys import argv, stderr
 from os.path import join, basename
 from glob import glob
 from time import time, sleep
+from datetime import datetime
 from pprint import pprint
 from pygame.locals import *
 import pygame
@@ -16,20 +17,25 @@ import pygame
 images = {}
 inputdir = argv[1]
 
+
+def log(msg):
+    now = datetime.now()
+    print >>stderr, "%s %s" % (now.isoformat(), msg)
+
 def reload_images(dir):
     global images
     for imagefile in glob(dir + "/*"):
         imagename = basename(imagefile)
-        print >>stderr, "Loaded %s" % imagefile
+        log("Loaded %s" % imagefile)
         try:
             img = pygame.image.load(imagefile).convert()
         except Exception as e:
-            print >>stderr, "Error %s loading %s" % (imagefile, str(e))
+            log("Error %s loading %s" % (imagefile, str(e)))
             continue
 
         img.set_colorkey((0, 0, 0))
         images[imagename] = img
-    print >>stderr, "(Re)loaded %i images" % len(images)
+    log("(Re)loaded %i images" % len(images))
 
 
 if __name__ == "__main__":
